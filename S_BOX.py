@@ -1,4 +1,4 @@
-def main():
+def get_sbox():
     S_BOX=[
     [ 4, 10, 9, 2, 13, 8, 0, 14, 6, 11, 1, 12, 7, 15, 5, 3 ],
     [ 14, 11, 4, 12, 6, 13, 15, 10, 2, 3, 8, 1, 0, 7, 5, 9 ],
@@ -11,5 +11,15 @@ def main():
 
     return S_BOX
 
-if __name__ == "__main__":
-    main()
+def sbox_fun(X):
+
+    A = []
+    for j in range(0, 32, 4):
+        A.append( int(X[j:j+4],2) )
+
+    S_BOX = get_sbox()
+    for j in A:
+        A[j] = S_BOX[j][A[j]]
+        A[j] = "{0:b}".format(A[j])
+
+    return ''.join(A)
