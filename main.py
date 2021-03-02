@@ -1,5 +1,5 @@
-from .encryption import encrypt_main
-from .decryption import decrypt_main
+from encryption import encrypt
+from decryption import decrypt
 
 def main():
 
@@ -7,9 +7,9 @@ def main():
     opt = int(input("1.Encrypt 2.Decrypt: \n"))
 
     if opt==1:
-        encrypt_main()
+        encrypt()
     else:
-        decrypt_main()
+        decrypt()
 
 
 
