@@ -7,10 +7,20 @@ def leftshift11(Y):
 
 def encrypt_32(val,k):
 
-    Ri,Li = val[:32], val[32:]
-    Ri = Ri[::-1]
-    Li = Li[::-1]
+    Li,Ri = val[:32], val[32:]
+    #Ri = Ri[::-1]
+    #Li = Li[::-1]
 
+    for i in range(1):
+        X = int(Ri,2) + int(k[i%8],2)                       # integer
+        X = X%pow(2,32)
+        X = format(X,'032b')                                # binary string
+        Y = sbox_fun(str(X))                                # string with f(x)(1-8) = sbox(x)(1-8)
+        Y = leftshift11(Y)
+        
+        Li,Ri = Ri,str(format(int(Y,2)^int(Li,2),'032b'))
+
+    """
     for i in range(24):
         X = int(Ri,2) + int(k[i%8],2)
         X = X%pow(2,32)
@@ -19,7 +29,7 @@ def encrypt_32(val,k):
         Y = leftshift11(Y)
         
         Li = Ri
-        Ri = str(format(int(Y,2)^int(Li,2),'016b'))
+        Ri = str(format(int(Y,2)^int(Li,2),'032b'))
 
     for i in range(8):
         X = int(Ri,2) + int(k[7-i%8],2)
@@ -29,7 +39,8 @@ def encrypt_32(val,k):
         Y = leftshift11(Y)
                 
         Li = Ri
-        Ri = str(format(int(Y,2)^int(Li,2),'016b'))
+        Ri = str(format(int(Y,2)^int(Li,2),'032b'))
+    """
     return Li,Ri
 
 
@@ -45,33 +56,36 @@ def encrypt():
 
     block_size = 8
     """
+
     text = "abcdefgh"
 
     #key = input("Enter 32 Character Key: ")
-    key = "1234567812345678123456781234567812345678123456781234567812345678"
+    key = "12345678123456781234567812345678"                                        #key is string-number
+    #text = "00000000"
+    #key = "0000000000000000000000000000000000000000000000000000000000000000"
     k = []
-    k = make_key(key)
-    val = ''.join(bin(ord(x)) for x in text).replace('b','')
-    val = "00000000"
-    key = "0000000000000000000000000000000000000000000000000000000000000000"
-    print(len(val),len(key))
+    k = make_key(key)                                                               #returns a list of 8 keys each of size 32 bits
+    val = ""
+    for x in text:
+        val = val + format(ord(x),'08b')                                            #convert text to binary string
 
     Li,Ri = encrypt_32(val,k)
 
-    val = Ri[::-1] + Li[::-1]
+    #val = Ri[::-1] + Li[::-1]
+    val = Li + Ri
     A = []
     for j in range(0, 64, 8):
-        A.append( val[j:j+8] )
+        A.append( val[j:j+8] )                                                      #convert to binary chars
     #print(A)
     for i in range(len(A)):
-        A[i] = chr(int(A[i],2))
-    #print( ''.join(A))
+        A[i] = chr(int(A[i],2))                                                     #convert to char
+
     print(A)
     print(val)
 
     print("would you like to decrypt? 1:Yes 2:Exit")
     choice = input()
     if choice == '1':
-        decrypt(val)
+        decrypt(val,k)
     else:
         return
