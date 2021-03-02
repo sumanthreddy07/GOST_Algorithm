@@ -1,12 +1,8 @@
-a=10
-s = "{0:b}".format(a)
-print(s)
-print(int('101',2))
-X="010100303012"
-A = []
-for j in range(0, len(X), 4):
-    A.append((X[j:j+4]))
+char_key = "12345678123456781234567812345678"
 
-print(A)
-
-print(2^4)
+bin_key = ''.join(format(ord(x),'08b') for x in char_key)
+    A = []
+    for j in range(0, 256, 8):
+        A.append( bin_key[j:j+8] )
+    
+    return A
