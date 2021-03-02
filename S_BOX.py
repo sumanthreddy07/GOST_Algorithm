@@ -18,8 +18,8 @@ def sbox_fun(X):
         A.append( int(X[j:j+4],2) )
 
     S_BOX = get_sbox()
-    for j in A:
+    for j in range(8):
         A[j] = S_BOX[j][A[j]]
-        A[j] = "{0:b}".format(A[j])
+        A[j] = format(A[j],'04b')
 
     return ''.join(A)
