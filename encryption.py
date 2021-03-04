@@ -55,7 +55,7 @@ def encrypt():
     for j in range(0, 64, 8):
         A.append( val[j:j+8] )                                                      #convert to binary chars
     #print(A)
-    with open(os.path.join(__location__, "encrypted.txt"),'w') as enc:
+    with open(os.path.join(__location__, "encrypted.txt"),'a') as enc:
         for i in (A):
             enc.write(chr(int(i,2)))                                                     #convert to char
         enc.close()
@@ -65,6 +65,6 @@ def encrypt():
     print("would you like to decrypt? 1:Yes 2:Exit")
     choice = input()
     if choice == '1':
-        decrypt(binstring,k)
+        decrypt(val,k)
     else:
         return
