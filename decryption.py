@@ -1,5 +1,5 @@
 from S_BOX import sbox_fun
-from KEY import make_key
+from key import make_key
 
 def leftshift11(Y):
     Y = Y[11:]+Y[:11]
@@ -8,47 +8,35 @@ def leftshift11(Y):
 def decrypt_32(val,k):
 
     Ri,Li = val[:32], val[32:]
-    #Ri = Ri[::-1]
-    #Li = Li[::-1]
-
-    for i in range(1):
-        X = int(Ri,2) + int(k[i%8],2)
-        X = X%pow(2,32)
-        X = format(X,'032b')
-        Y = sbox_fun(str(X))
-        Y = leftshift11(Y)
-        
-        Li,Ri = Ri,str(format(int(Y,2)^int(Li,2),'032b'))
-
-    """
-    for i in range(24):
-        X = int(Ri,2) + int(k[i%8],2)
-        X = X%pow(2,32)
-        X = format(X,'032b')
-        Y = sbox_fun(str(X))
-        Y = leftshift11(Y)
-        
-        Li = Ri
-        Ri = str(format(int(Y,2)^int(Li,2),'032b'))
+    Ri = Ri[::-1]
+    Li = Li[::-1]
 
     for i in range(8):
-        X = int(Ri,2) + int(k[7-i%8],2)
+        X = int(Ri,2) + int(k[i],2)                       # integer
         X = X%pow(2,32)
-        X = format(X,'032b')
-        Y = sbox_fun(str(X))
-        Y = leftshift11(Y)
-                
-        Li = Ri
-        Ri = str(format(int(Y,2)^int(Li,2),'032b'))
-    """
+        X = format(X,'032b')                                # binary string
+        X = sbox_fun(str(X))                                # string with f(x)(1-8) = sbox(x)(1-8)
+        X = leftshift11(X)
+        
+        Li,Ri = Ri,str(format(int(X,2)^int(Li,2),'032b'))
+
+    for i in range(24):
+        X = int(Ri,2) + int(k[7-i%8],2)                       # integer
+        X = X%pow(2,32)
+        X = format(X,'032b')                                # binary string
+        X = sbox_fun(str(X))                                # string with f(x)(1-8) = sbox(x)(1-8)
+        X = leftshift11(X)
+        
+        Li,Ri = Ri,str(format(int(X,2)^int(Li,2),'032b'))
+
+
     return Li,Ri
 
 def decrypt(val,k):
 
     Li,Ri = decrypt_32(val,k)
 
-    val = Ri + Li
-    #val = Li[::-1] + Ri[::-1]
+    val = Ri[::-1] + Li[::-1]
     A = []
     for j in range(0, 64, 8):
         A.append( val[j:j+8] )
