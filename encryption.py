@@ -2,6 +2,7 @@ import os
 from S_BOX import sbox_fun
 from key import make_key
 from decryption import decrypt
+from pad import padding 
 def leftshift11(Y):
     Y = Y[11:]+Y[:11]
     return Y
@@ -47,24 +48,32 @@ def encrypt():
     k = []
     k = make_key(key)                                                               #returns a list of 8 keys each of size 32 bits
 
-    Li,Ri = encrypt_32(binstring,k)
-
-    val = Li[::-1] + Ri[::-1]
+    binstring = padding(binstring)
+    print(binstring,len(binstring)/64)
+    #add a padding (space bar would be fine) which be depadded later
+    #add a 64 block loop
     
-    A = []
-    for j in range(0, 64, 8):
-        A.append( val[j:j+8] )                                                      #convert to binary chars
-    #print(A)
-    with open(os.path.join(__location__, "encrypted.txt"),'a') as enc:
-        for i in (A):
-            enc.write(chr(int(i,2)))                                                     #convert to char
-        enc.close()
+    for x in range(len(binstring)//64):
+        Li,Ri = encrypt_32(binstring[x*64:(x+1)*64],k)
 
+        val = Li[::-1] + Ri[::-1]
+    
+        A = []
+        for j in range(0, 64, 8):
+            A.append( val[j:j+8] )                                                      #convert to binary chars
+        #print(A)
+        with open(os.path.join(__location__, "encrypted.txt"),'w') as enc:
+            for i in (A):
+                enc.write(chr(int(i,2)))                                                     #convert to char
+            enc.close()
     #print(A)
 
     print("would you like to decrypt? 1:Yes 2:Exit")
     choice = input()
     if choice == '1':
-        decrypt(val,k)
+        with open(os.path.join(__location__, "encrypted.txt"),'r') as enc:
+            encline = enc.read()
+            val = ''.join(format(ord(i), '08b') for i in encline)
+            decrypt(val,k)
     else:
         return
