@@ -1,6 +1,7 @@
 from S_BOX import sbox_fun
 from key import make_key
-
+from pad import depadding
+import os
 def leftshift11(Y):
     Y = Y[11:]+Y[:11]
     return Y
@@ -32,17 +33,28 @@ def decrypt_32(val,k):
 
     return Li,Ri
 
-def decrypt(val,k):
+def decrypt(binstring,k):
 
-    Li,Ri = decrypt_32(val,k)
-
-    val = Ri[::-1] + Li[::-1]
     A = []
-    for j in range(0, 64, 8):
-        A.append( val[j:j+8] )
-    #print(A)
-    for i in range(len(A)):
-        A[i] = chr(int(A[i],2))
+    decstr = ""
+    for x in range(len(binstring)//64):
+        Li,Ri = decrypt_32(binstring[x*64:(x+1)*64],k)
+
+        val = Ri[::-1] + Li[::-1]
+        decstr = decstr + val
+        #print(A)
+    print(decstr, len(decstr))
+    decstr = depadding(decstr)
+    print(decstr, len(decstr))
+    for j in range(0, len(decstr), 8):
+        A.append( decstr[j:j+8] )
+    
+    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
+    print(len(A))
+    with open(os.path.join(__location__, "decrypted.txt"),'w') as enc:
+        for i in (A):
+            enc.write(chr(int(i,2)))                                                     #convert to char
+    enc.close()
     #print( ''.join(A))
     print(A)
-    print(val)
