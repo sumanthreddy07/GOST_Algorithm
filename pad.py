@@ -6,7 +6,7 @@ def padding(string):
 
     num = len(string)%64
     if (num!=0):
-        pad = (64 - num)/8
+        pad = (64 - num)//8
         string = string + padwith*pad
 
     return string
