@@ -1,4 +1,5 @@
 #import section
+
 import os
 import argparse
 from encryption import encrypt
