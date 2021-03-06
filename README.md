@@ -19,7 +19,7 @@ Subkey Sequence
 ## GOST Structure
 ```
 1. Key Store Unit (KSU) stores 256-bit string by 32-bit register (K0, K1, …, K7).
-2. Twoof 32 bit register (R1, R2)
+2. Two of 32 bit register (R1, R2)
 3. 32 bit adder modulo 232 (CM1)
 4. Bitwise Adder XOR (CM2)
 5. Substitusion block (S), an eight of 64 bit SBox.
