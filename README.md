@@ -13,7 +13,7 @@ One Round Encryption
 <img src="images/subkey_sequence.png">
 </p>
 <p align="center">
-Subsey Sequence
+Subkey Sequence
 </p>
 
 ## GOST Structure
