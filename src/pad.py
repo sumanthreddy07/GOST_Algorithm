@@ -1,5 +1,6 @@
 #padding the text to remove partially filled blocks
 #padding with 00100000, ie ASCII code 32 (space) 
+
 def padcode():
     return "00100000"
 

@@ -3,6 +3,7 @@
 #char_key = 32 Characters
 #bin_key = 256 bits
 #K is a list containing K[0]=bin_key[0:32], K[1]=bin_key[32:64] ... K[7]=bin_key[224:256]
+
 def make_key(char_key):
     if len(char_key)!=32:
         print("Wrong Key Size. Exiting...")
