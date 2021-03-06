@@ -1,14 +1,18 @@
 # GOST Algorithm
 
-Symmetric key block ciphers are the most common encryption methods in cryptographic systems. These ciphers are used as main blocks for the Random Number Generators, Hash Functions and Message Authentication Codes(MAC). GOST is an abbreviation of **"Gosudarstvennyi Standard"** or **"Government Standard"**, a cryptography algorithm made in Russia. This algorithm is a rival of the DES algorithm created by the United States. Structurally, this algorithm is very similar to the DES algorithm. The algorithm is simple encryption algorithm which has some processes as many as 32 rounds and uses 64-bit block cipher with 256-bit key. GOST method also uses the S-Box 8 pieces of permanent and XOR operations and Rotate Left Shift.
+        Symmetric key block ciphers are the most common encryption methods in cryptographic systems. These ciphers are used as main blocks for the Random Number Generators, Hash Functions and Message Authentication Codes(MAC). GOST is an abbreviation of **"Gosudarstvennyi Standard"** or **"Government Standard"**, a cryptography algorithm made in Russia. This algorithm is a rival of the DES algorithm created by the United States. Structurally, this algorithm is very similar to the DES algorithm. The algorithm is simple encryption algorithm which has some processes as many as 32 rounds and uses 64-bit block cipher with 256-bit key. GOST method also uses the S-Box 8 pieces of permanent and XOR operations and Rotate Left Shift.
 
 <p align="center">
 <img src="images/one_round_encryption.png">
+</p>
+<p align="center">
 One Round Encryption
 </p>
 
 <p align="center">
 <img src="images/subkey_sequence.png">
+</p>
+<p align="center">
 Subsey Sequence
 </p>
 
@@ -41,4 +45,3 @@ for more info: python3 src/main.py --help
 
 >1. H. AKTAŞ, ***Implementation of GOST 28147-89 Encryption and Decryption Algorithm on FPGA***, 2018
 >2. Muhammad Iqbal, Yudi Sahputra, Andysah Putera Utama Siahaan, ***The Understanding of GOST Crytography Technique***, 2016
-```
