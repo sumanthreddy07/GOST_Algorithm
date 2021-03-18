@@ -11,6 +11,13 @@
 >5. Substitusion block (S), an eight of 64 bit SBox.
 >6. Left rotation shift register (R),11 bit.
 
+<p align="center">
+<img src="images/steps.png">
+</p>
+<p align="center">
+Basic Steps of GOST Algorithm
+</p>
+
 ## Encryption and Decryption Block Formulas
 >In this structure n is the length of the block, n length block is divided into the L and R blocks which’s length is n/2.
 ```
