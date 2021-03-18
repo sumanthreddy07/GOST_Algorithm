@@ -12,7 +12,7 @@
 >6. Left rotation shift register (R),11 bit.
 
 <p align="center">
-<img src="images/steps.png">
+<img src="images/basic_steps.png">
 </p>
 <p align="center">
 Basic Steps of GOST Algorithm
