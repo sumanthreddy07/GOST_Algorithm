@@ -2,7 +2,7 @@
 
 from S_BOX import sbox_fun
 from key import make_key
-from decryption import decrypt
+from decryption import decrypt,decrypt_cbc
 from pad import padding 
 
 #left shifts the binary sting by 11 bits
@@ -55,11 +55,14 @@ def encrypt(mainfile,keyfile,encryptedfile,decryptedfile):
     #padding to avoid partially filled blocks
     binstring = padding(binstring)
 
+    
+
     with open(encryptedfile,'w') as enc:
         for x in range(len(binstring)//64):
             Li,Ri = encrypt_32(binstring[x*64:(x+1)*64],k)
 
             val = Li + Ri
+            print(f"value: ",val)
         
             for j in range(0, 64, 8):
                 enc.write(chr(int(val[j:j+8],2)))
@@ -73,3 +76,63 @@ def encrypt(mainfile,keyfile,encryptedfile,decryptedfile):
         decrypt(encryptedfile,keyfile,decryptedfile,k)
     else:
         return
+
+
+def encrypt_cbc(vectorfile,mainfile,keyfile,encryptedfile,decryptedfile):
+
+    with open(keyfile,'r') as f:
+        key = f.read()
+    
+    k = list(make_key(key))
+    f.close()
+    
+    with open(mainfile,'r') as f:
+        lines = f.read()
+    
+    binstring = ''.join(format(ord(i), '08b') for i in lines)
+    f.close()
+
+    #padding to avoid partially filled blocks
+    binstring = padding(binstring)
+    ini_vect=""
+
+    with open(vectorfile,'r') as f:
+        ini_vect = f.read()
+    init_vect = ''.join(format(ord(x),'08b') for x in ini_vect)
+    # print(init_vect)
+
+
+
+    
+
+    with open(encryptedfile,'w') as enc:
+        
+        for x in range(len(binstring)//64):
+            
+            block=binstring[x*64:(x+1)*64]
+            XOR_res=[int(init_vect[j],2) ^ int(block[j],2) for j in range(64)]
+            XOR_resl=''.join(str(e) for e in XOR_res)
+            # print(f"XOR_resl: ",XOR_resl)
+            # print(type(XOR_resl))
+            # print(XOR_resl)
+            Li,Ri = encrypt_32(XOR_resl,k)
+
+            val = Li + Ri
+            # print(f"val: {val}, init: {init_vect}")
+        
+            for j in range(0, 64, 8):
+                enc.write(chr(int(val[j:j+8],2)))
+
+            init_vect=val
+    enc.close()
+
+    print("would you like to decrypt?")
+    print("1.Yes 2.Exit: ")
+    
+    choice = input()
+    if choice == '1':
+        decrypt_cbc(vectorfile,encryptedfile,keyfile,decryptedfile,k)
+    else:
+        return
+
+

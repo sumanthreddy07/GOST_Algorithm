@@ -2,8 +2,8 @@
 
 import os
 import argparse
-from encryption import encrypt
-from decryption import decrypt
+from encryption import encrypt,encrypt_cbc
+from decryption import decrypt,decrypt_cbc
 
 #locate function returns the path for the txt files in the data folder
 def locate(filename):
@@ -12,12 +12,18 @@ def locate(filename):
 
 def main(args):
     print("would you like to encrypt or decrypt?")
-    opt = int(input("1.Encrypt 2.Decrypt: "))
+    opt = int(input("1.Encrypt 2.Decrypt: 3:EncryptCBC 4:DecryptCBC: "))
 
     if opt==1:
         encrypt( locate(args.main_file),locate(args.key_file),locate(args.encrypted_file),locate(args.decrypted_file))
-    else:
+    elif opt==2:
         decrypt( locate(args.encrypted_file),locate(args.key_file),locate(args.decrypted_file))
+    elif opt==3:
+        encrypt_cbc(locate(args.vector_file), locate(args.main_file),locate(args.key_file),locate(args.encrypted_file),locate(args.decrypted_file))
+    else:
+        decrypt_cbc(locate(args.vector_file), locate(args.encrypted_file),locate(args.key_file),locate(args.decrypted_file))
+
+
 
 if __name__ == "__main__":
     
@@ -35,6 +41,9 @@ if __name__ == "__main__":
     
     parser.add_argument('--decrypted_file', type=str, default='decrypted.txt', 
             help='The name of the file in which decrypted data is written. This file must be placed in the data folder.')
+
+    parser.add_argument('--vector_file', type=str, default='vector.txt', 
+            help='The initialization vector in string format .')
 
     args = parser.parse_args()
     
