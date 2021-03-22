@@ -62,7 +62,7 @@ def encrypt(mainfile,keyfile,encryptedfile,decryptedfile):
             Li,Ri = encrypt_32(binstring[x*64:(x+1)*64],k)
 
             val = Li + Ri
-            print(f"value: ",val)
+            #print(f"value: ",val)
         
             for j in range(0, 64, 8):
                 enc.write(chr(int(val[j:j+8],2)))
