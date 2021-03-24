@@ -55,14 +55,11 @@ def encrypt(mainfile,keyfile,encryptedfile,decryptedfile):
     #padding to avoid partially filled blocks
     binstring = padding(binstring)
 
-    
-
     with open(encryptedfile,'w') as enc:
         for x in range(len(binstring)//64):
             Li,Ri = encrypt_32(binstring[x*64:(x+1)*64],k)
 
             val = Li + Ri
-            #print(f"value: ",val)
         
             for j in range(0, 64, 8):
                 enc.write(chr(int(val[j:j+8],2)))
@@ -99,12 +96,7 @@ def encrypt_cbc(vectorfile,mainfile,keyfile,encryptedfile,decryptedfile):
     with open(vectorfile,'r') as f:
         ini_vect = f.read()
     init_vect = ''.join(format(ord(x),'08b') for x in ini_vect)
-    # print(init_vect)
-
-
-
     
-
     with open(encryptedfile,'w') as enc:
         
         for x in range(len(binstring)//64):
@@ -112,14 +104,11 @@ def encrypt_cbc(vectorfile,mainfile,keyfile,encryptedfile,decryptedfile):
             block=binstring[x*64:(x+1)*64]
             XOR_res=[int(init_vect[j],2) ^ int(block[j],2) for j in range(64)]
             XOR_resl=''.join(str(e) for e in XOR_res)
-            # print(f"XOR_resl: ",XOR_resl)
-            # print(type(XOR_resl))
-            # print(XOR_resl)
+            
             Li,Ri = encrypt_32(XOR_resl,k)
 
             val = Li + Ri
-            # print(f"val: {val}, init: {init_vect}")
-        
+            
             for j in range(0, 64, 8):
                 enc.write(chr(int(val[j:j+8],2)))
 
@@ -134,5 +123,3 @@ def encrypt_cbc(vectorfile,mainfile,keyfile,encryptedfile,decryptedfile):
         decrypt_cbc(vectorfile,encryptedfile,keyfile,decryptedfile,k)
     else:
         return
-
-
