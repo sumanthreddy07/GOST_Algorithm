@@ -1,19 +1,17 @@
 #import section
 
+import os
 from S_BOX import sbox_fun
 from key import make_key
 from pad import depadding
 
 # left shifts the binary sting by 11 bits
-
-
 def leftshift11(Y):
     Y = Y[11:]+Y[:11]
     return Y
 
+
 # decrypting a 64 bit block
-
-
 def decrypt_32(val, k):
 
     Ri, Li = val[:32], val[32:]
@@ -49,7 +47,11 @@ def decrypt(encryptedfile, keyfile, decryptedfile, k=None):
 
         k = list(make_key(key))
         f.close()
-
+    
+    if not os.path.isfile(encryptedfile):
+        print("No Encrypted file found. Exiting")
+        exit()
+    
     with open(encryptedfile, 'r') as f:
         lines = f.read()
 
@@ -59,7 +61,6 @@ def decrypt(encryptedfile, keyfile, decryptedfile, k=None):
     decstr = ""
     for x in range(len(binstring)//64):
         Li, Ri = decrypt_32(binstring[x*64:(x+1)*64], k)
-        print(f"val: {Ri+Li}")
         decstr = decstr + Ri + Li
 
     #padding is removed
@@ -80,6 +81,10 @@ def decrypt_cbc(vectorfile, encryptedfile, keyfile, decryptedfile, k=None):
         k = list(make_key(key))
         f.close()
 
+    if not os.path.isfile(encryptedfile):
+        print("No Encrypted file found. Exiting")
+        exit()
+
     with open(encryptedfile, 'r') as f:
         lines = f.read()
 
@@ -96,7 +101,6 @@ def decrypt_cbc(vectorfile, encryptedfile, keyfile, decryptedfile, k=None):
 
     for x in range(len(binstring)//64):
         block = binstring[x*64:(x+1)*64]
-        print(f"block:{block}")
         Li, Ri = decrypt_32(block, k)
         val = Ri+Li
 
