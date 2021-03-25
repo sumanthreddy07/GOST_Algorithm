@@ -2,14 +2,15 @@
 
 >Symmetric key block ciphers are the most common encryption methods in cryptographic systems. These ciphers are used as main blocks for the Random Number Generators, Hash Functions and Message Authentication Codes(MAC). GOST is an abbreviation of **"Gosudarstvennyi Standard"** or **"Government Standard"**, a cryptography algorithm made in Russia. This algorithm is a rival of the DES algorithm created by the United States. Structurally, this algorithm is very similar to the DES algorithm. The algorithm is simple encryption algorithm which has some processes as many as 32 rounds and uses 64-bit block cipher with 256-bit key. GOST method also uses the S-Box 8 pieces of permanent and XOR operations and Rotate Left Shift.
 
+>On the already existing GOST Cryptography Technique, this code alsp uses a Cipher Block Chaining Encryption/Decrption Mechanism. Cipher block chaining (CBC) is a mode of operation for a block cipher (one in which a sequence of bits are encrypted as a single unit or block with a cipher key applied to the entire block). Cipher block chaining uses what is known as an initialization vector (IV) of a certain length.One of its key characteristics is that it uses a chaining mechanism that causes the decryption of a block of ciphertext to depend on all the preceding ciphertext blocks. As a result, the entire validity of all preceding blocks is contained in the immediately previous ciphertext block. A single bit error in a ciphertext block affects the decryption of all subsequent blocks. Rearrangement of the order of the ciphertext blocks causes decryption to become corrupted.
+
 ## GOST Structure
 
->1. Key Store Unit (KSU) stores 256-bit string by 32-bit register (K0, K1, …, K7).
->2. Two of 32 bit register (R1, R2)
->3. 32 bit adder modulo 232 (CM1)
->4. Bitwise Adder XOR (CM2)
+>1. Key Store Unit stores 256-bit string by 32-bit register (K0, K1, …, K7).
+>3. 32 bit adder modulo 232
+>4. Bitwise Adder XOR
 >5. Substitusion block (S), an eight of 64 bit SBox.
->6. Left rotation shift register (R),11 bit.
+>6. Left rotation shift,11 bit.
 
 <p align="center">
 <img src="images/basic_steps.png">
@@ -46,18 +47,20 @@ Subkey Sequence
 
 - Place the text to be encrypted in a file (default file is 'encrypted.txt' but can be changed by using the optional arguments)
 - Place the 32 charcter key text in the key.txt file
+- Place the Initialzation Vector (IV) character string in vector.txt file (for CBC Encryption/Decryption)
 
 ### Run
 ```bash
 $ python3 src/main.py <optional arguments>
 ```
 
-### Optional Arguments
+### Optional Arguments (and their default file names)
 ```
---main_file = nameofthefile.txt
---encrypted_file = nameofthefile.txt
---key_file = nameofthefile.txt
---decrypted_file = nameofthefile.txt
+--main_file       =  original.txt
+--encrypted_file  =  encrypted.txt
+--key_file        =  key.txt
+--decrypted_file  =  decrypted.txt
+--vector_file     =  vector.txt
 
 for more info: python3 src/main.py --help
 ```
